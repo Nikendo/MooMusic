@@ -105,4 +105,32 @@ final class AudioPlayerServiceTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 1.0)
     }
+
+    func test_oldDeviceUnavailable_pausesPlayback() {
+        // Given
+        audioPlayerService.play()
+        let expectation = XCTestExpectation(description: "The call pauses the player")
+
+        audioPlayerService.statePublisher
+            .dropFirst()
+            .sink { state in
+                if state == .paused {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+
+        // When
+        let userInfo: [AnyHashable: Any] = [
+            AVAudioSessionRouteChangeReasonKey: AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue
+        ]
+        NotificationCenter.default.post(
+            name: AVAudioSession.routeChangeNotification,
+            object: nil,
+            userInfo: userInfo
+        )
+
+        // Then
+        wait(for: [expectation], timeout: 1.0)
+    }
 }

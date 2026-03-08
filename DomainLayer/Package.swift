@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DomainLayer",
     platforms: [
-        .iOS(.v26),
+        .iOS(.v17),
         .macOS(.v15),
         .visionOS(.v26)
     ],

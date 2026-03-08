@@ -2,7 +2,7 @@ import Combine
 import AVFoundation
 import XCTest
 @testable import DomainLayer
-@testable import DataLayer
+@testable import PlatformLayer
 
 final class AudioPlayerServiceTests: XCTestCase {
     private var audioPlayerService: AudioPlayerService!

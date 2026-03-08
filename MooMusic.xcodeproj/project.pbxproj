@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7325C6762F5CF8FF00ECED9E /* DomainLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C6752F5CF8FF00ECED9E /* DomainLayer */; };
 		7325C6792F5CFBA600ECED9E /* DataLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C6782F5CFBA600ECED9E /* DataLayer */; };
+		7325C67C2F5D0DF700ECED9E /* PlatformLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C67B2F5D0DF700ECED9E /* PlatformLayer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +27,7 @@
 		7325C65D2F5C96BE00ECED9E /* MooMusicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MooMusicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7325C66D2F5CF61700ECED9E /* DomainLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DomainLayer; sourceTree = "<group>"; };
 		7325C6772F5CF99300ECED9E /* DataLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataLayer; sourceTree = "<group>"; };
+		7325C67A2F5D0BE100ECED9E /* PlatformLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlatformLayer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -48,6 +50,7 @@
 			files = (
 				7325C6792F5CFBA600ECED9E /* DataLayer in Frameworks */,
 				7325C6762F5CF8FF00ECED9E /* DomainLayer in Frameworks */,
+				7325C67C2F5D0DF700ECED9E /* PlatformLayer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +67,7 @@
 		7325C62A2F5C72BA00ECED9E = {
 			isa = PBXGroup;
 			children = (
+				7325C67A2F5D0BE100ECED9E /* PlatformLayer */,
 				7325C6772F5CF99300ECED9E /* DataLayer */,
 				7325C66D2F5CF61700ECED9E /* DomainLayer */,
 				7325C6352F5C72BB00ECED9E /* MooMusic */,
@@ -111,6 +115,7 @@
 			packageProductDependencies = (
 				7325C6752F5CF8FF00ECED9E /* DomainLayer */,
 				7325C6782F5CFBA600ECED9E /* DataLayer */,
+				7325C67B2F5D0DF700ECED9E /* PlatformLayer */,
 			);
 			productName = MooMusic;
 			productReference = 7325C6332F5C72BB00ECED9E /* MooMusic.app */;
@@ -357,6 +362,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -389,6 +395,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,6 +505,10 @@
 		7325C6782F5CFBA600ECED9E /* DataLayer */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DataLayer;
+		};
+		7325C67B2F5D0DF700ECED9E /* PlatformLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PlatformLayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

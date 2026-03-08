@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-public protocol AudioServiceProtocol: AnyObject {
+public protocol AudioServiceProtocol {
     var statePublisher: AnyPublisher<PlaybackState, Never> { get }
     var currentTimePublisher: AnyPublisher<Double, Never> { get }
     var durationPublisher: AnyPublisher<Double, Never> { get }

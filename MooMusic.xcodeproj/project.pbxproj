@@ -10,6 +10,7 @@
 		7325C6762F5CF8FF00ECED9E /* DomainLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C6752F5CF8FF00ECED9E /* DomainLayer */; };
 		7325C6792F5CFBA600ECED9E /* DataLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C6782F5CFBA600ECED9E /* DataLayer */; };
 		7325C67C2F5D0DF700ECED9E /* PlatformLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 7325C67B2F5D0DF700ECED9E /* PlatformLayer */; };
+		733D14192F5DFD91005BCC6D /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 733D14182F5DFD91005BCC6D /* PresentationLayer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +29,7 @@
 		7325C66D2F5CF61700ECED9E /* DomainLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DomainLayer; sourceTree = "<group>"; };
 		7325C6772F5CF99300ECED9E /* DataLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataLayer; sourceTree = "<group>"; };
 		7325C67A2F5D0BE100ECED9E /* PlatformLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlatformLayer; sourceTree = "<group>"; };
+		733D14172F5DFAD4005BCC6D /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,6 +52,7 @@
 			files = (
 				7325C6792F5CFBA600ECED9E /* DataLayer in Frameworks */,
 				7325C6762F5CF8FF00ECED9E /* DomainLayer in Frameworks */,
+				733D14192F5DFD91005BCC6D /* PresentationLayer in Frameworks */,
 				7325C67C2F5D0DF700ECED9E /* PlatformLayer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +70,7 @@
 		7325C62A2F5C72BA00ECED9E = {
 			isa = PBXGroup;
 			children = (
+				733D14172F5DFAD4005BCC6D /* PresentationLayer */,
 				7325C67A2F5D0BE100ECED9E /* PlatformLayer */,
 				7325C6772F5CF99300ECED9E /* DataLayer */,
 				7325C66D2F5CF61700ECED9E /* DomainLayer */,
@@ -116,6 +120,7 @@
 				7325C6752F5CF8FF00ECED9E /* DomainLayer */,
 				7325C6782F5CFBA600ECED9E /* DataLayer */,
 				7325C67B2F5D0DF700ECED9E /* PlatformLayer */,
+				733D14182F5DFD91005BCC6D /* PresentationLayer */,
 			);
 			productName = MooMusic;
 			productReference = 7325C6332F5C72BB00ECED9E /* MooMusic.app */;
@@ -509,6 +514,10 @@
 		7325C67B2F5D0DF700ECED9E /* PlatformLayer */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PlatformLayer;
+		};
+		733D14182F5DFD91005BCC6D /* PresentationLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PresentationLayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

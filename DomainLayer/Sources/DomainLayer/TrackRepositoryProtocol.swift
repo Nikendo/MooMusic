@@ -1,5 +1,5 @@
 import Foundation
 
-public protocol TrackRepositoryProtocol: AnyObject {
+public protocol TrackRepositoryProtocol: Sendable {
     func searchTracks(query: String) async throws -> [Track]
 }

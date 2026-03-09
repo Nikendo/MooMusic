@@ -48,6 +48,7 @@ public class AudioPlayerService: AudioServiceProtocol {
             player.replaceCurrentItem(with: playerItem)
         } else {
             player = AVPlayer(playerItem: playerItem)
+            addTimeObserver()
         }
 
         observePlayerItem(playerItem)

@@ -3,7 +3,7 @@ import MediaPlayer
 @testable import DomainLayer
 @testable import PlatformLayer
 
-final class NowPlayingManagerTests: XCTest {
+final class NowPlayingManagerTests: XCTestCase {
     private var mockAudioService: MockAudioService!
     private var nowPlayingManager: NowPlayingManager!
 

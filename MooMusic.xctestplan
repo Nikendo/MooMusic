@@ -1,0 +1,58 @@
+{
+  "configurations" : [
+    {
+      "id" : "AA7E6DC6-02FE-463F-BF44-7E1DC58509F0",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:MooMusic.xcodeproj",
+      "identifier" : "7325C6322F5C72BA00ECED9E",
+      "name" : "MooMusic"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DataLayer",
+        "identifier" : "DataLayerTests",
+        "name" : "DataLayerTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MooMusic.xcodeproj",
+        "identifier" : "7325C65C2F5C96BE00ECED9E",
+        "name" : "MooMusicTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:PresentationLayer",
+        "identifier" : "PresentationLayerTests",
+        "name" : "PresentationLayerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:DomainLayer",
+        "identifier" : "DomainLayerTests",
+        "name" : "DomainLayerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:PlatformLayer",
+        "identifier" : "PlatformLayerTests",
+        "name" : "PlatformLayerTests"
+      }
+    }
+  ],
+  "version" : 1
+}

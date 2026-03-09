@@ -30,6 +30,7 @@
 		7325C6772F5CF99300ECED9E /* DataLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataLayer; sourceTree = "<group>"; };
 		7325C67A2F5D0BE100ECED9E /* PlatformLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlatformLayer; sourceTree = "<group>"; };
 		733D14172F5DFAD4005BCC6D /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
+		73A7DBD32F5E49D1009EA463 /* MooMusic.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = MooMusic.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -70,6 +71,7 @@
 		7325C62A2F5C72BA00ECED9E = {
 			isa = PBXGroup;
 			children = (
+				73A7DBD32F5E49D1009EA463 /* MooMusic.xctestplan */,
 				733D14172F5DFAD4005BCC6D /* PresentationLayer */,
 				7325C67A2F5D0BE100ECED9E /* PlatformLayer */,
 				7325C6772F5CF99300ECED9E /* DataLayer */,

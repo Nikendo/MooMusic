@@ -1,19 +1,36 @@
-*.iml
-.kotlin
-.gradle
-**/build/
-xcuserdata
-!src/**/build/
-local.properties
-.idea
+## Build results
+build/
+DerivedData/
+
+## Architecture-specific
+*.moved-aside
+
+## Personal settings (Window positions, open files, etc.)
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+
+## Xcode project settings
+xcuserdata/
+
+## Swift Package Manager
+.build/
+.swiftpm/
+
+## Dependency Managers
+# CocoaPods - Keep the Podfile and Podfile.lock, ignore the Pods directory
+Pods/
+
+# Carthage - Ignore the build artifacts
+Carthage/Build/
+Carthage/Checkouts/
+
+## Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+## OS-specific files
 .DS_Store
-captures
-.externalNativeBuild
-.cxx
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
-node_modules/

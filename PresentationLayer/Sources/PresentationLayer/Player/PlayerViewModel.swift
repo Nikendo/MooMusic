@@ -6,11 +6,12 @@ import DomainLayer
 public final class PlayerViewModel: ObservableObject {
 
     @Published public private(set) var currentTrack: Track?
-    @Published public private(set) var currentTime: Double = 0.0
+    @Published public var currentTime: Double = 0.0
     @Published public private(set) var duration: Double = 0.0
     @Published public private(set) var errorMessage: String?
     @Published public private(set) var isPlaying = false
     @Published public var isLoading = false
+    @Published public var isScrubbing = false
 
     private let audioService: AudioServiceProtocol
     private let trackRepository: TrackRepositoryProtocol
@@ -96,7 +97,11 @@ private extension PlayerViewModel {
 
         audioService.currentTimePublisher
             .receive(on: DispatchQueue.main)
-            .assign(to: &$currentTime)
+            .sink { [weak self] time in
+                guard let self, !self.isScrubbing else { return }
+                self.currentTime = time
+            }
+            .store(in: &cancellables)
 
         audioService.durationPublisher
             .receive(on: DispatchQueue.main)

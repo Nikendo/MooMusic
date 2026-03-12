@@ -82,19 +82,24 @@ private extension PlayerView {
 
     var progressView: some View {
         VStack(spacing: 8) {
-            Slider(value: Binding(
-                get: { viewModel.currentTime },
-                set: { newValue in viewModel.seek(to: newValue) }
-            ), in: 0...(viewModel.duration > 0 ? viewModel.duration : 1))
-            .accentColor(.yellow)
+            ProgressSlider(
+                value: $viewModel.currentTime,
+                range: 0...(viewModel.duration > 0 ? viewModel.duration : 1),
+                isScrubbing: $viewModel.isScrubbing,
+                onEditingChanged: {
+                    viewModel.seek(to: viewModel.currentTime)
+                },
+                activeColor: .white,
+                inactiveColor: .white.opacity(0.3)
+            )
 
             HStack {
                 Text(viewModel.formatTime(viewModel.currentTime))
                 Spacer()
                 Text(viewModel.formatTime(viewModel.duration))
             }
-            .font(.caption)
-            .foregroundColor(.white.opacity(0.7))
+            .font(.system(size: 12, weight: .medium, design: .default))
+            .foregroundColor(.white.opacity(0.5))
         }
     }
 

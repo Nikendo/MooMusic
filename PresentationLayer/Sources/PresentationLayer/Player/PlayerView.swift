@@ -22,12 +22,14 @@ public struct PlayerView: View {
                     metadataView
                     progressView
                     controlsView
+                    secondaryActionsView
                 }
                 .padding(.horizontal, 24)
 
                 Spacer()
             }
         }
+        .animation(.easeInOut, value: viewModel.palette)
         .task {
             await viewModel.fetchAndPlayTrack(query: "Soda Island")
         }
@@ -124,5 +126,52 @@ private extension PlayerView {
             }
         }
         .foregroundColor(viewModel.palette.secondaryText)
+    }
+    
+    var secondaryActionsView: some View {
+        HStack {
+            Button(action: viewModel.tapOnRepeat) {
+                Image(systemName: "repeat")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(viewModel.isOnRepeat ? viewModel.palette.secondaryText : viewModel.palette.secondaryText.opacity(0.5))
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        Capsule()
+                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                    )
+            }
+            
+            Spacer()
+            
+            Button(action: {}) {
+                Image(systemName: "text.alignleft")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        Capsule()
+                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                    )
+            }
+            .disabled(true)
+            
+            Spacer()
+            
+            Button(action: {}) {
+                Image(systemName: "arrow.down.circle")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        Capsule()
+                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                    )
+            }
+            .disabled(true)
+        }
+        .padding(.horizontal, 24)
     }
 }

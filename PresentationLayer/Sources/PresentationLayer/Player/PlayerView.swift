@@ -1,5 +1,6 @@
 import SwiftUI
 import DomainLayer
+import Kingfisher
 
 public struct PlayerView: View {
     @StateObject private var viewModel: PlayerViewModel
@@ -10,7 +11,7 @@ public struct PlayerView: View {
 
     public var body: some View {
         ZStack {
-            Color(red: 0.55, green: 0.45, blue: 0.3)
+            viewModel.palette.background
                 .ignoresSafeArea()
 
             VStack(spacing: 32) {
@@ -37,26 +38,27 @@ private extension PlayerView {
     var headerView: some View {
         Text("My vibe")
             .font(.headline)
-            .foregroundColor(.white)
+            .foregroundColor(viewModel.palette.secondaryText)
             .padding(.top, 16)
     }
 
     var albumCoverView: some View {
-        AsyncImage(url: viewModel.currentTrack?.coverURL) { phase in
-            if let image = phase.image {
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(12)
-                    .shadow(radius: 10)
-            } else if phase.error != nil {
-                Color.red
-            } else {
+        KFImage(viewModel.currentTrack?.coverURL)
+            .placeholder {
                 Color.gray.opacity(0.3)
             }
-        }
-        .frame(width: 320, height: 320)
-        .padding(.top, 20)
+            .onSuccess { result in
+                viewModel.onArtworkLoaded(result.image)
+            }
+            .onFailure { error in
+                print("Loading artwork error: \(error.localizedDescription)")
+            }
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 10)
+            .frame(width: 320, height: 320)
+            .padding(.top, 20)
     }
 
     var metadataView: some View {
@@ -65,17 +67,17 @@ private extension PlayerView {
                 Text(viewModel.currentTrack?.title ?? "Loading...")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(viewModel.palette.primaryText)
 
                 Text(viewModel.currentTrack?.artist ?? "Artist")
                     .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(viewModel.palette.secondaryText)
             }
             Spacer()
 
             Button(action: { /* Like action */ }) {
                 Image(systemName: "heart")
-                    .foregroundColor(.white)
+                    .foregroundColor(viewModel.palette.secondaryText)
             }
         }
     }
@@ -89,8 +91,8 @@ private extension PlayerView {
                 onEditingChanged: {
                     viewModel.seek(to: viewModel.currentTime)
                 },
-                activeColor: .white,
-                inactiveColor: .white.opacity(0.3)
+                activeColor: viewModel.palette.accent,
+                inactiveColor: viewModel.palette.secondaryText.opacity(0.3)
             )
 
             HStack {
@@ -99,7 +101,7 @@ private extension PlayerView {
                 Text(viewModel.formatTime(viewModel.duration))
             }
             .font(.system(size: 12, weight: .medium, design: .default))
-            .foregroundColor(.white.opacity(0.5))
+            .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
         }
     }
 
@@ -113,7 +115,7 @@ private extension PlayerView {
             Button(action: { viewModel.togglePlayPause() }) {
                 Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                     .font(.system(size: 64))
-                    .foregroundColor(.yellow) // Та самая желтая кнопка
+                    .foregroundColor(viewModel.palette.accent)
             }
 
             Button(action: { viewModel.skipForward() }) {
@@ -121,6 +123,6 @@ private extension PlayerView {
                     .font(.title)
             }
         }
-        .foregroundColor(.white)
+        .foregroundColor(viewModel.palette.secondaryText)
     }
 }

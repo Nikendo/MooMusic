@@ -27,7 +27,8 @@ struct MooMusicApp: App {
         WindowGroup {
             PlayerView(viewModel: PlayerViewModel(
                 audioService: audioService,
-                trackRepository: trackRepository
+                trackRepository: trackRepository,
+                colorExtractorService: ColorExtractorService()
             ))
         }
     }

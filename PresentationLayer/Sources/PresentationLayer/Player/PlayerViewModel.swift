@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 import DomainLayer
+import PlatformLayer
 
 @MainActor
 public final class PlayerViewModel: ObservableObject {
@@ -12,14 +13,22 @@ public final class PlayerViewModel: ObservableObject {
     @Published public private(set) var isPlaying = false
     @Published public var isLoading = false
     @Published public var isScrubbing = false
+    @Published public private(set) var palette: AdaptivePalette = .default
+    @Published public private(set) var isBackgroundDark: Bool = true
 
     private let audioService: AudioServiceProtocol
     private let trackRepository: TrackRepositoryProtocol
+    private let colorExtractorService: ColorExtractorService
     private var cancellables: Set<AnyCancellable> = []
 
-    public init(audioService: AudioServiceProtocol, trackRepository: TrackRepositoryProtocol) {
+    public init(
+        audioService: AudioServiceProtocol,
+        trackRepository: TrackRepositoryProtocol,
+        colorExtractorService: ColorExtractorService
+    ) {
         self.audioService = audioService
         self.trackRepository = trackRepository
+        self.colorExtractorService = colorExtractorService
 
         bindAudioService()
     }
@@ -72,6 +81,17 @@ public final class PlayerViewModel: ObservableObject {
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60
         return String(format: "%d:%02d", minutes, seconds)
+    }
+
+    public func onArtworkLoaded(_ image: UIImage) {
+        Task {
+            if let color = await colorExtractorService.extractDominantColor(from: image) {
+                let newPalette = color.generateAdaptivePalette()
+                await MainActor.run {
+                    self.palette = newPalette
+                }
+            }
+        }
     }
 }
 

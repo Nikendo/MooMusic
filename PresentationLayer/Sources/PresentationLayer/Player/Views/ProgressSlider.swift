@@ -26,7 +26,7 @@ public struct ProgressSlider: View {
                     .frame(width: geometry.size.width * CGFloat(percent), height: 4)
 
                 Rectangle()
-                    .fill(Color.green.opacity(0.3))
+                    .fill(Color.clear)
                     .frame(height: 30)
                     .contentShape(.rect)
                     .gesture(

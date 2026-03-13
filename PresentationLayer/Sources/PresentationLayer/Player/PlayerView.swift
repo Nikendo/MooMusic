@@ -16,7 +16,12 @@ public struct PlayerView: View {
 
             VStack(spacing: 32) {
                 headerView
+
+                Spacer()
+
                 albumCoverView
+
+                Spacer()
 
                 VStack(spacing: 24) {
                     metadataView

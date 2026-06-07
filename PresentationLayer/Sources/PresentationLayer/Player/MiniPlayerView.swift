@@ -56,5 +56,6 @@ private extension MiniPlayerView {
                 .font(.title2)
                 .foregroundColor(.primary)
         }
+        .accessibilityIdentifier("miniPlayer.playPauseButton")
     }
 }

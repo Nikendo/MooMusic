@@ -2,7 +2,7 @@ import AVFoundation
 import Combine
 import DomainLayer
 
-public class AudioPlayerService: AudioServiceProtocol {
+public final class AudioPlayerService: AudioServiceProtocol {
 
     private let stateSubject = CurrentValueSubject<PlaybackState, Never>(.idle)
     private let currentTimeSubject = CurrentValueSubject<Double, Never>(0)

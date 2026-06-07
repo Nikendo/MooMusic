@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 import DomainLayer
-import PlatformLayer
+import DesignSystem
 
 @MainActor
 public final class PlayerViewModel: ObservableObject {
@@ -16,64 +16,36 @@ public final class PlayerViewModel: ObservableObject {
     @Published public private(set) var artworkImage: UIImage?
     @Published public private(set) var isOnRepeat = false
 
-    private let artists = [
-        "Soda Island",
-        "Javi Medina - Gitana",
-        "Shifty Brent - Without Me (1960's"
-    ]
-
-    private var lastTrackIndex = 0
-
+    private let searchAndPlayTrackUseCase: SearchAndPlayTrackUseCase
+    private let skipTrackUseCase: SkipTrackUseCase
+    private let colorExtractorService: ColorExtractorServiceProtocol
     private let audioService: AudioServiceProtocol
-    private let trackRepository: TrackRepositoryProtocol
-    private let colorExtractorService: ColorExtractorService
     private var cancellables: Set<AnyCancellable> = []
 
     public init(
-        audioService: AudioServiceProtocol,
-        trackRepository: TrackRepositoryProtocol,
-        colorExtractorService: ColorExtractorService
+        searchAndPlayTrackUseCase: SearchAndPlayTrackUseCase,
+        skipTrackUseCase: SkipTrackUseCase,
+        colorExtractorService: ColorExtractorServiceProtocol,
+        audioService: AudioServiceProtocol
     ) {
-        self.audioService = audioService
-        self.trackRepository = trackRepository
+        self.searchAndPlayTrackUseCase = searchAndPlayTrackUseCase
+        self.skipTrackUseCase = skipTrackUseCase
         self.colorExtractorService = colorExtractorService
+        self.audioService = audioService
 
         bindAudioService()
     }
 
-    public func fetchAndPlayTrack(query: String) async {
+    public func playTrack(query: String) async {
         isLoading = true
         errorMessage = nil
 
         do {
-            let tracks = try await trackRepository.searchTracks(query: query)
-            if let firstTrack = tracks.first {
-                self.currentTrack = firstTrack
-                audioService.load(from: firstTrack.previewURL)
-            } else {
-                errorMessage = "Track not found"
-            }
+            currentTrack = try await searchAndPlayTrackUseCase.execute(query: query)
+        } catch let error as PlayerError {
+            errorMessage = message(for: error)
         } catch {
-            errorMessage = "Network error: \(error.localizedDescription)"
-        }
-
-        isLoading = false
-    }
-
-    public func fetchAndPlayLast() async {
-        isLoading = true
-        errorMessage = nil
-
-        do {
-            let tracks = try await trackRepository.searchTracks(query: artists[lastTrackIndex])
-            if let firstTrack = tracks.first {
-                self.currentTrack = firstTrack
-                audioService.load(from: firstTrack.previewURL)
-            } else {
-                errorMessage = "Track not found"
-            }
-        } catch {
-            errorMessage = "Network error: \(error.localizedDescription)"
+            errorMessage = error.localizedDescription
         }
 
         isLoading = false
@@ -88,36 +60,14 @@ public final class PlayerViewModel: ObservableObject {
     }
 
     public func skipForward() {
-        // Go to next track
-
-        // TODO: Implement normal logic. This code just for demo
-//        let newTime = min(currentTime + 10, duration)
-//        seek(to: newTime)
-
-        if lastTrackIndex < artists.count - 1 {
-            lastTrackIndex += 1
-        } else {
-            lastTrackIndex = 0
-        }
         Task {
-            await fetchAndPlayLast()
+            await skipTrack(direction: .forward)
         }
     }
 
     public func skipBackward() {
-        // Go to previous track
-
-        // TODO: Implement normal logic. This code just for demo
-//        let newTime = min(currentTime - 10, 0)
-//        seek(to: newTime)
-
-        if lastTrackIndex > 0 {
-            lastTrackIndex -= 1
-        } else {
-            lastTrackIndex = artists.count - 1
-        }
         Task {
-            await fetchAndPlayLast()
+            await skipTrack(direction: .backward)
         }
     }
 
@@ -131,9 +81,11 @@ public final class PlayerViewModel: ObservableObject {
     public func onArtworkLoaded(_ image: UIImage) {
         artworkImage = image
 
+        guard let imageData = image.pngData() else { return }
+
         Task {
-            if let color = await colorExtractorService.extractDominantColor(from: image) {
-                let newPalette = color.generateAdaptivePalette()
+            if let rgbColor = await colorExtractorService.extractDominantColor(from: imageData) {
+                let newPalette = AdaptivePalette.from(color: rgbColor)
                 await MainActor.run {
                     self.palette = newPalette
                 }
@@ -147,7 +99,30 @@ public final class PlayerViewModel: ObservableObject {
 }
 
 private extension PlayerViewModel {
-    
+    func skipTrack(direction: SkipTrackUseCase.Direction) async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            currentTrack = try await skipTrackUseCase.execute(direction: direction)
+        } catch let error as PlayerError {
+            errorMessage = message(for: error)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+
+        isLoading = false
+    }
+
+    func message(for error: PlayerError) -> String {
+        switch error {
+        case .trackNotFound:
+            return "Track not found"
+        case .networkError(let description):
+            return "Network error: \(description)"
+        }
+    }
+
     func bindAudioService() {
         audioService.statePublisher
             .receive(on: DispatchQueue.main)
@@ -156,7 +131,6 @@ private extension PlayerViewModel {
                 case .idle, .paused:
                     self?.isPlaying = false
                 case .loading:
-                    // TODO: show loading indicator or something like that
                     break
                 case .playing:
                     self?.isPlaying = true
@@ -165,7 +139,7 @@ private extension PlayerViewModel {
                 }
             }
             .store(in: &cancellables)
-        
+
         audioService.currentTimePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] time in
@@ -173,7 +147,7 @@ private extension PlayerViewModel {
                 self.currentTime = time
             }
             .store(in: &cancellables)
-        
+
         audioService.durationPublisher
             .receive(on: DispatchQueue.main)
             .assign(to: &$duration)

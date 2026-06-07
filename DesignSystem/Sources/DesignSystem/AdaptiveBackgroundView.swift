@@ -1,19 +1,14 @@
-//
-//  File.swift
-//  DesignSystem
-//
-//  Created by Nikita Shmatov on 07/06/2026.
-//
-
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
 
 public struct AdaptiveBackgroundView: View {
     let image: UIImage?
-    
+
     public init(image: UIImage?) {
         self.image = image
     }
-    
+
     public var body: some View {
         Color(hex: "#121212")
             .overlay {
@@ -30,3 +25,4 @@ public struct AdaptiveBackgroundView: View {
             .clipped()
     }
 }
+#endif

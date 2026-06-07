@@ -5,15 +5,20 @@ import Kingfisher
 
 public struct PlayerView: View {
     @EnvironmentObject public var viewModel: PlayerViewModel
-    @Environment(\.dismiss) var dismiss
+
+    private let onDismiss: () -> Void
+
+    public init(onDismiss: @escaping () -> Void = {}) {
+        self.onDismiss = onDismiss
+    }
 
     public var body: some View {
         VStack(spacing: 32) {
-            Spacer()
+            Spacer(minLength: 0)
 
             albumCoverView
 
-            Spacer()
+            Spacer(minLength: 0)
 
             VStack(spacing: 24) {
                 metadataView
@@ -23,39 +28,44 @@ public struct PlayerView: View {
             }
             .padding(.horizontal, 24)
 
-            Spacer()
+            Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.easeInOut, value: viewModel.palette)
         .background {
             AdaptiveBackgroundView(image: viewModel.artworkImage)
+                .ignoresSafeArea()
         }
-        .safeAreaInset(edge: .top, content: { headerView })
-        .animation(.easeInOut, value: viewModel.palette)
+        .safeAreaInset(edge: .top) {
+            headerView
+                .padding(.top)
+        }
     }
 }
 
 private extension PlayerView {
     var headerView: some View {
-        HStack {
-            closeButtonView
-            Spacer()
+        ZStack {
             Text("My vibe")
                 .font(.headline)
                 .foregroundColor(viewModel.palette.secondaryText)
-            Spacer()
-            Rectangle()
-                .frame(width: 48, height: 48)
-                .foregroundStyle(.clear)
+
+            HStack {
+                closeButtonView
+                Spacer()
+            }
         }
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)
     }
 
     var closeButtonView: some View {
-        Button(action: { dismiss() }) {
+        Button(action: onDismiss) {
             Image(systemName: "chevron.down")
                 .font(.system(size: 20, weight: .medium))
                 .foregroundColor(viewModel.palette.secondaryText)
         }
+        .accessibilityIdentifier("player.dismissButton")
         .frame(width: 48, height: 48)
     }
 
@@ -128,17 +138,20 @@ private extension PlayerView {
                 Image(systemName: "backward.fill")
                     .font(.title)
             }
+            .accessibilityIdentifier("player.skipBackwardButton")
 
             Button(action: { viewModel.togglePlayPause() }) {
                 Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                     .font(.system(size: 64))
                     .foregroundColor(viewModel.palette.accent)
             }
+            .accessibilityIdentifier("player.playPauseButton")
 
             Button(action: { viewModel.skipForward() }) {
                 Image(systemName: "forward.fill")
                     .font(.title)
             }
+            .accessibilityIdentifier("player.skipForwardButton")
         }
         .foregroundColor(viewModel.palette.secondaryText)
     }

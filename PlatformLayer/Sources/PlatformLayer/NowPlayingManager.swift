@@ -3,7 +3,8 @@ import MediaPlayer
 import Combine
 import DomainLayer
 
-public final class NowPlayingManager {
+@MainActor
+public final class NowPlayingManager: NowPlayingServiceProtocol {
     private let audioService: AudioServiceProtocol
     private var cancellables: Set<AnyCancellable> = []
 

@@ -28,6 +28,5 @@ public struct AdaptiveBackgroundView: View {
                 }
             }
             .clipped()
-            .ignoresSafeArea()
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 import DomainLayer
 import Kingfisher
 
@@ -7,28 +8,26 @@ public struct PlayerView: View {
     @Environment(\.dismiss) var dismiss
 
     public var body: some View {
-        ZStack {
-            viewModel.palette.background
-                .ignoresSafeArea()
+        VStack(spacing: 32) {
+            Spacer()
 
-            VStack(spacing: 32) {
+            albumCoverView
 
-                Spacer()
+            Spacer()
 
-                albumCoverView
-
-                Spacer()
-
-                VStack(spacing: 24) {
-                    metadataView
-                    progressView
-                    controlsView
-                    secondaryActionsView
-                }
-                .padding(.horizontal, 24)
-
-                Spacer()
+            VStack(spacing: 24) {
+                metadataView
+                progressView
+                controlsView
+                secondaryActionsView
             }
+            .padding(.horizontal, 24)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            AdaptiveBackgroundView(image: viewModel.artworkImage)
         }
         .safeAreaInset(edge: .top, content: { headerView })
         .animation(.easeInOut, value: viewModel.palette)

@@ -13,6 +13,7 @@ public final class PlayerViewModel: ObservableObject {
     @Published public var isLoading = false
     @Published public var isScrubbing = false
     @Published public private(set) var palette: AdaptivePalette = .default
+    @Published public private(set) var artworkImage: UIImage?
     @Published public private(set) var isOnRepeat = false
 
     private let artists = [
@@ -128,6 +129,8 @@ public final class PlayerViewModel: ObservableObject {
     }
 
     public func onArtworkLoaded(_ image: UIImage) {
+        artworkImage = image
+
         Task {
             if let color = await colorExtractorService.extractDominantColor(from: image) {
                 let newPalette = color.generateAdaptivePalette()

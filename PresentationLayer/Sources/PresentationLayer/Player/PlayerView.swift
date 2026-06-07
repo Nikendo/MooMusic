@@ -3,11 +3,8 @@ import DomainLayer
 import Kingfisher
 
 public struct PlayerView: View {
-    @StateObject private var viewModel: PlayerViewModel
-
-    public init(viewModel: PlayerViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
+    @EnvironmentObject public var viewModel: PlayerViewModel
+    @Environment(\.dismiss) var dismiss
 
     public var body: some View {
         ZStack {
@@ -15,7 +12,6 @@ public struct PlayerView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 32) {
-                headerView
 
                 Spacer()
 
@@ -34,19 +30,34 @@ public struct PlayerView: View {
                 Spacer()
             }
         }
+        .safeAreaInset(edge: .top, content: { headerView })
         .animation(.easeInOut, value: viewModel.palette)
-        .task {
-            await viewModel.fetchAndPlayTrack(query: "Soda Island")
-        }
     }
 }
 
 private extension PlayerView {
     var headerView: some View {
-        Text("My vibe")
-            .font(.headline)
-            .foregroundColor(viewModel.palette.secondaryText)
-            .padding(.top, 16)
+        HStack {
+            closeButtonView
+            Spacer()
+            Text("My vibe")
+                .font(.headline)
+                .foregroundColor(viewModel.palette.secondaryText)
+            Spacer()
+            Rectangle()
+                .frame(width: 48, height: 48)
+                .foregroundStyle(.clear)
+        }
+        .padding(.horizontal, 16)
+    }
+
+    var closeButtonView: some View {
+        Button(action: { dismiss() }) {
+            Image(systemName: "chevron.down")
+                .font(.system(size: 20, weight: .medium))
+                .foregroundColor(viewModel.palette.secondaryText)
+        }
+        .frame(width: 48, height: 48)
     }
 
     var albumCoverView: some View {

@@ -144,7 +144,7 @@ public final class PlayerViewModel: ObservableObject {
 }
 
 private extension PlayerViewModel {
-
+    
     func bindAudioService() {
         audioService.statePublisher
             .receive(on: DispatchQueue.main)
@@ -162,7 +162,7 @@ private extension PlayerViewModel {
                 }
             }
             .store(in: &cancellables)
-
+        
         audioService.currentTimePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] time in
@@ -170,7 +170,7 @@ private extension PlayerViewModel {
                 self.currentTime = time
             }
             .store(in: &cancellables)
-
+        
         audioService.durationPublisher
             .receive(on: DispatchQueue.main)
             .assign(to: &$duration)

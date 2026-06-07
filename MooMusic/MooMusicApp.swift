@@ -13,23 +13,25 @@ import DataLayer
 
 @main
 struct MooMusicApp: App {
-    let audioService: AudioServiceProtocol
-    let trackRepository: TrackRepositoryProtocol
-    let nowPlayingManager: NowPlayingManager
+    @StateObject private var playerViewModel: PlayerViewModel
 
     init() {
-        audioService = AudioPlayerService()
-        trackRepository = ITunesTrackRepository()
-        nowPlayingManager = NowPlayingManager(audioService: audioService)
+        let audioService = AudioPlayerService()
+        let trackRepository = ITunesTrackRepository()
+        let colorExtractor = ColorExtractorService()
+        let nowPlayingManager = NowPlayingManager(audioService: audioService)
+
+        _playerViewModel = StateObject(wrappedValue: PlayerViewModel(
+            audioService: audioService,
+            trackRepository: trackRepository,
+            colorExtractorService: colorExtractor
+        ))
     }
 
     var body: some Scene {
         WindowGroup {
-            PlayerView(viewModel: PlayerViewModel(
-                audioService: audioService,
-                trackRepository: trackRepository,
-                colorExtractorService: ColorExtractorService()
-            ))
+            RootView()
+                .environmentObject(playerViewModel)
         }
     }
 }

@@ -15,20 +15,19 @@ public struct AdaptiveBackgroundView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color(hex: "#121212")
-                .ignoresSafeArea()
-            
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea()
-                    .saturation(0.5)
-                    .blur(radius: 60, opaque: true)
-                    .overlay(Color.black.opacity(0.4))
-                    .transition(.opacity.animation(.easeInOut(duration: 0.5)))
+        Color(hex: "#121212")
+            .overlay {
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .saturation(0.5)
+                        .blur(radius: 60, opaque: true)
+                        .overlay(Color.black.opacity(0.4))
+                        .transition(.opacity.animation(.easeInOut(duration: 0.5)))
+                }
             }
-        }
+            .clipped()
+            .ignoresSafeArea()
     }
 }

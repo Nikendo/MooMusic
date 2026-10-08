@@ -1,14 +1,15 @@
 import SwiftUI
 import DesignSystem
 import DomainLayer
-import Kingfisher
 
 public struct PlayerView: View {
     @EnvironmentObject public var viewModel: PlayerViewModel
-
+    
+    private let namespace: Namespace.ID
     private let onDismiss: () -> Void
 
-    public init(onDismiss: @escaping () -> Void = {}) {
+    public init(namespace: Namespace.ID, onDismiss: @escaping () -> Void = {}) {
+        self.namespace = namespace
         self.onDismiss = onDismiss
     }
 
@@ -31,7 +32,7 @@ public struct PlayerView: View {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.easeInOut, value: viewModel.palette)
+        .animation(.easeInOut, value: viewModel.currentTrack)
         .background {
             AdaptiveBackgroundView(image: viewModel.artworkImage)
                 .ignoresSafeArea()
@@ -48,7 +49,7 @@ private extension PlayerView {
         ZStack {
             Text("My vibe")
                 .font(.headline)
-                .foregroundColor(viewModel.palette.secondaryText)
+                .foregroundColor(DesignTokens.Colors.fillPrimary)
 
             HStack {
                 closeButtonView
@@ -63,28 +64,14 @@ private extension PlayerView {
         Button(action: onDismiss) {
             Image(systemName: "chevron.down")
                 .font(.system(size: 20, weight: .medium))
-                .foregroundColor(viewModel.palette.secondaryText)
+                .foregroundColor(DesignTokens.Colors.fillPrimary)
         }
         .accessibilityIdentifier("player.dismissButton")
         .frame(width: 48, height: 48)
     }
 
     var albumCoverView: some View {
-        KFImage(viewModel.currentTrack?.coverURL)
-            .placeholder {
-                Color.gray.opacity(0.3)
-            }
-            .onSuccess { result in
-                viewModel.onArtworkLoaded(result.image)
-            }
-            .onFailure { error in
-                print("Loading artwork error: \(error.localizedDescription)")
-            }
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(12)
-            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 10)
-            .frame(width: 320, height: 320)
+        PlayerAlbumCoverAnchor(namespace: namespace, slot: .full)
             .padding(.top, 20)
     }
 
@@ -94,17 +81,17 @@ private extension PlayerView {
                 Text(viewModel.currentTrack?.title ?? "Loading...")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(viewModel.palette.primaryText)
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
 
                 Text(viewModel.currentTrack?.artist ?? "Artist")
                     .font(.subheadline)
-                    .foregroundColor(viewModel.palette.secondaryText)
+                    .foregroundColor(DesignTokens.Colors.textSecondary)
             }
             Spacer()
 
             Button(action: { /* Like action */ }) {
                 Image(systemName: "heart")
-                    .foregroundColor(viewModel.palette.secondaryText)
+                    .foregroundColor(DesignTokens.Colors.fillPrimary)
             }
         }
     }
@@ -118,8 +105,8 @@ private extension PlayerView {
                 onEditingChanged: {
                     viewModel.seek(to: viewModel.currentTime)
                 },
-                activeColor: viewModel.palette.accent,
-                inactiveColor: viewModel.palette.secondaryText.opacity(0.3)
+                activeColor: DesignTokens.Colors.fillPrimary,
+                inactiveColor: DesignTokens.Colors.fillPrimary.opacity(0.3)
             )
 
             HStack {
@@ -128,7 +115,7 @@ private extension PlayerView {
                 Text(viewModel.formatTime(viewModel.duration))
             }
             .font(.system(size: 12, weight: .medium, design: .default))
-            .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
+            .foregroundColor(DesignTokens.Colors.textSecondary)
         }
     }
 
@@ -143,7 +130,7 @@ private extension PlayerView {
             Button(action: { viewModel.togglePlayPause() }) {
                 Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                     .font(.system(size: 64))
-                    .foregroundColor(viewModel.palette.accent)
+                    .foregroundColor(DesignTokens.Colors.fillPrimary)
             }
             .accessibilityIdentifier("player.playPauseButton")
 
@@ -153,7 +140,7 @@ private extension PlayerView {
             }
             .accessibilityIdentifier("player.skipForwardButton")
         }
-        .foregroundColor(viewModel.palette.secondaryText)
+        .foregroundColor(DesignTokens.Colors.fillPrimary)
     }
     
     var secondaryActionsView: some View {
@@ -161,12 +148,12 @@ private extension PlayerView {
             Button(action: viewModel.tapOnRepeat) {
                 Image(systemName: "repeat")
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(viewModel.isOnRepeat ? viewModel.palette.secondaryText : viewModel.palette.secondaryText.opacity(0.5))
+                    .foregroundColor(viewModel.isOnRepeat ? DesignTokens.Colors.fillPrimary : DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
                     .background(
                         Capsule()
-                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                            .fill(DesignTokens.Colors.fillPrimary.opacity(0.1))
                     )
             }
             
@@ -175,12 +162,12 @@ private extension PlayerView {
             Button(action: {}) {
                 Image(systemName: "text.alignleft")
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
+                    .foregroundColor(DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
                     .background(
                         Capsule()
-                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                            .fill(DesignTokens.Colors.fillPrimary.opacity(0.1))
                     )
             }
             .disabled(true)
@@ -190,12 +177,12 @@ private extension PlayerView {
             Button(action: {}) {
                 Image(systemName: "arrow.down.circle")
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(viewModel.palette.secondaryText.opacity(0.5))
+                    .foregroundColor(DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
                     .background(
                         Capsule()
-                            .fill(viewModel.palette.secondaryText.opacity(0.1))
+                            .fill(DesignTokens.Colors.fillPrimary.opacity(0.1))
                     )
             }
             .disabled(true)

@@ -12,7 +12,6 @@ public final class PlayerViewModel: ObservableObject {
     @Published public private(set) var isPlaying = false
     @Published public var isLoading = false
     @Published public var isScrubbing = false
-    @Published public private(set) var palette: AdaptivePalette = .default
     @Published public private(set) var artworkImage: UIImage?
     @Published public private(set) var isOnRepeat = false
 
@@ -80,17 +79,6 @@ public final class PlayerViewModel: ObservableObject {
 
     public func onArtworkLoaded(_ image: UIImage) {
         artworkImage = image
-
-        guard let imageData = image.pngData() else { return }
-
-        Task {
-            if let rgbColor = await colorExtractorService.extractDominantColor(from: imageData) {
-                let newPalette = AdaptivePalette.from(color: rgbColor)
-                await MainActor.run {
-                    self.palette = newPalette
-                }
-            }
-        }
     }
 
     public func tapOnRepeat() {

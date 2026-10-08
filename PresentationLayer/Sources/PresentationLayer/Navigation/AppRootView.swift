@@ -5,6 +5,8 @@ public struct AppRootView: View {
     @ObservedObject private var router: MainRouter
     @ObservedObject private var playerViewModel: PlayerViewModel
 
+    @Namespace private var namespace
+    
     public init(coordinator: AppCoordinator) {
         self.coordinator = coordinator
         self.router = coordinator.router
@@ -34,25 +36,50 @@ public struct AppRootView: View {
                     .tag(MainTab.radio)
             }
 
-            if coordinator.isPlayerExpanded {
-                PlayerView(onDismiss: coordinator.collapsePlayer)
+            if playerViewModel.currentTrack != nil {
+                PlayerView(namespace: namespace, onDismiss: collapsePlayer)
                     .environmentObject(playerViewModel)
-                    .transition(.move(edge: .bottom))
-                    .zIndex(2)
-            }
+                    .opacity(coordinator.isPlayerExpanded ? 1 : 0)
+                    .allowsHitTesting(coordinator.isPlayerExpanded)
+                    .accessibilityHidden(!coordinator.isPlayerExpanded)
+                    .zIndex(1)
 
-            if playerViewModel.currentTrack != nil && !coordinator.isPlayerExpanded {
                 VStack {
                     Spacer()
-                    MiniPlayerView(onExpand: coordinator.expandPlayer)
+                    MiniPlayerView(namespace: namespace, onExpand: expandPlayer)
                         .environmentObject(playerViewModel)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 64)
                 }
+                .opacity(coordinator.isPlayerExpanded ? 0 : 1)
+                .allowsHitTesting(!coordinator.isPlayerExpanded)
+                .accessibilityHidden(coordinator.isPlayerExpanded)
                 .zIndex(1)
+
+                PlayerAlbumCoverHero(
+                    url: playerViewModel.currentTrack?.coverURL,
+                    namespace: namespace,
+                    onArtworkLoaded: { image in
+                        playerViewModel.onArtworkLoaded(image)
+                    }
+                )
+                .zIndex(2)
             }
         }
-        .animation(.spring, value: coordinator.isPlayerExpanded)
-        .animation(.spring, value: playerViewModel.currentTrack != nil)
+        .environment(\.isPlayerExpanded, coordinator.isPlayerExpanded)
+        .animation(PlayerAlbumCoverGeometry.animation, value: coordinator.isPlayerExpanded)
+        .animation(.spring(response: 0.35, dampingFraction: 0.9), value: playerViewModel.currentTrack != nil)
+    }
+
+    private func expandPlayer() {
+        withAnimation(PlayerAlbumCoverGeometry.animation) {
+            coordinator.expandPlayer()
+        }
+    }
+
+    private func collapsePlayer() {
+        withAnimation(PlayerAlbumCoverGeometry.animation) {
+            coordinator.collapsePlayer()
+        }
     }
 }

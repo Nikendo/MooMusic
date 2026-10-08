@@ -16,7 +16,7 @@ public struct HomeView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
-                playerViewModel.palette.background
+                AdaptiveBackgroundView(image: playerViewModel.artworkImage)
                     .ignoresSafeArea()
 
                 VStack {

@@ -1,8 +1,10 @@
 import SwiftUI
-import Kingfisher
 
 public struct MiniPlayerView: View {
     @EnvironmentObject public var viewModel: PlayerViewModel
+    
+    public let namespace: Namespace.ID
+    
     public var onExpand: () -> Void
 
     public var body: some View {
@@ -23,17 +25,7 @@ public struct MiniPlayerView: View {
 
 private extension MiniPlayerView {
     var albumCoverView: some View {
-        KFImage(viewModel.currentTrack?.coverURL)
-            .placeholder {
-                Color.gray.opacity(0.3)
-            }
-            .onSuccess { result in
-                viewModel.onArtworkLoaded(result.image)
-            }
-            .resizable()
-            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 10)
-            .frame(width: 40, height: 40)
-            .cornerRadius(12)
+        PlayerAlbumCoverAnchor(namespace: namespace, slot: .mini)
     }
 
     var trackInfoView: some View {

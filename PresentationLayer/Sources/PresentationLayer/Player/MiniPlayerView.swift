@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 public struct MiniPlayerView: View {
     @EnvironmentObject public var viewModel: PlayerViewModel
@@ -44,7 +45,7 @@ private extension MiniPlayerView {
     
     var playButtonView: some View {
         Button(action: viewModel.togglePlayPause) {
-            Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
+            (viewModel.isPlaying ? DesignSymbol.pause : DesignSymbol.play).image
                 .font(.title2)
                 .foregroundColor(.primary)
         }

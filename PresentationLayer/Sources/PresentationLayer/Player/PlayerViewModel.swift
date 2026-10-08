@@ -105,9 +105,9 @@ private extension PlayerViewModel {
     func message(for error: PlayerError) -> String {
         switch error {
         case .trackNotFound:
-            return "Track not found"
+            return Strings.trackNotFound
         case .networkError(let description):
-            return "Network error: \(description)"
+            return Strings.networkError(description)
         }
     }
 

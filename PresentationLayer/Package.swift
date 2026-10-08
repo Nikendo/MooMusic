@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "PresentationLayer",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
@@ -25,7 +26,10 @@ let package = Package(
     targets: [
         .target(
             name: "PresentationLayer",
-            dependencies: ["DomainLayer", "DesignSystem", "Kingfisher"]
+            dependencies: ["DomainLayer", "DesignSystem", "Kingfisher"],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "PresentationLayerTests",

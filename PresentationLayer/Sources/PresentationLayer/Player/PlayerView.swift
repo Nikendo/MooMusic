@@ -47,7 +47,7 @@ public struct PlayerView: View {
 private extension PlayerView {
     var headerView: some View {
         ZStack {
-            Text("My vibe")
+            Strings.playerVibe
                 .font(.headline)
                 .foregroundColor(DesignTokens.Colors.fillPrimary)
 
@@ -62,7 +62,7 @@ private extension PlayerView {
 
     var closeButtonView: some View {
         Button(action: onDismiss) {
-            Image(systemName: "chevron.down")
+            DesignSymbol.dismiss.image
                 .font(.system(size: 20, weight: .medium))
                 .foregroundColor(DesignTokens.Colors.fillPrimary)
         }
@@ -78,19 +78,19 @@ private extension PlayerView {
     var metadataView: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.currentTrack?.title ?? "Loading...")
+                Text(viewModel.currentTrack?.title ?? Strings.playerLoading)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(DesignTokens.Colors.textPrimary)
 
-                Text(viewModel.currentTrack?.artist ?? "Artist")
+                Text(viewModel.currentTrack?.artist ?? Strings.playerUnknownArtist)
                     .font(.subheadline)
                     .foregroundColor(DesignTokens.Colors.textSecondary)
             }
             Spacer()
 
             Button(action: { /* Like action */ }) {
-                Image(systemName: "heart")
+                DesignSymbol.favorite.image
                     .foregroundColor(DesignTokens.Colors.fillPrimary)
             }
         }
@@ -122,20 +122,20 @@ private extension PlayerView {
     var controlsView: some View {
         HStack(spacing: 40) {
             Button(action: { viewModel.skipBackward() }) {
-                Image(systemName: "backward.fill")
+                DesignSymbol.skipBackward.image
                     .font(.title)
             }
             .accessibilityIdentifier("player.skipBackwardButton")
 
             Button(action: { viewModel.togglePlayPause() }) {
-                Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                (viewModel.isPlaying ? DesignSymbol.pauseCircle : DesignSymbol.playCircle).image
                     .font(.system(size: 64))
                     .foregroundColor(DesignTokens.Colors.fillPrimary)
             }
             .accessibilityIdentifier("player.playPauseButton")
 
             Button(action: { viewModel.skipForward() }) {
-                Image(systemName: "forward.fill")
+                DesignSymbol.skipForward.image
                     .font(.title)
             }
             .accessibilityIdentifier("player.skipForwardButton")
@@ -146,7 +146,7 @@ private extension PlayerView {
     var secondaryActionsView: some View {
         HStack {
             Button(action: viewModel.tapOnRepeat) {
-                Image(systemName: "repeat")
+                DesignSymbol.repeatPlayback.image
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(viewModel.isOnRepeat ? DesignTokens.Colors.fillPrimary : DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)
@@ -160,7 +160,7 @@ private extension PlayerView {
             Spacer()
             
             Button(action: {}) {
-                Image(systemName: "text.alignleft")
+                DesignSymbol.lyrics.image
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)
@@ -175,7 +175,7 @@ private extension PlayerView {
             Spacer()
             
             Button(action: {}) {
-                Image(systemName: "arrow.down.circle")
+                DesignSymbol.download.image
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(DesignTokens.Colors.fillPrimary.opacity(0.5))
                     .padding(.horizontal, 32)

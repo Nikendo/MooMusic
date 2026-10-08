@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 public struct AppRootView: View {
     @ObservedObject private var coordinator: AppCoordinator
@@ -25,13 +26,21 @@ public struct AppRootView: View {
                     }
                 )
                 .tabItem {
-                    Label("Home", systemImage: "music.note.house.fill")
+                    Label {
+                        Strings.tabHome
+                    } icon: {
+                        DesignSymbol.home.image
+                    }
                 }
                 .tag(MainTab.home)
 
                 RadioView()
                     .tabItem {
-                        Label("Radio", systemImage: "dot.radiowaves.left.and.right")
+                        Label {
+                            Strings.tabRadio
+                        } icon: {
+                            DesignSymbol.radio.image
+                        }
                     }
                     .tag(MainTab.radio)
             }

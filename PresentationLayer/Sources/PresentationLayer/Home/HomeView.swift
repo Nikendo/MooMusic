@@ -1,6 +1,10 @@
 import SwiftUI
 import DesignSystem
 
+private enum SampleTrack {
+    static let query = "Bed Chem - Sabrina Carpenter"
+}
+
 public struct HomeView: View {
     @ObservedObject private var playerViewModel: PlayerViewModel
     private let onPlayTrack: (String) -> Void
@@ -20,15 +24,17 @@ public struct HomeView: View {
                     .ignoresSafeArea()
 
                 VStack {
-                    Text("Home screen")
+                    Strings.homeScreen
 
-                    Button("A random track for test") {
-                        onPlayTrack("Bed Chem - Sabrina Carpenter")
+                    Button {
+                        onPlayTrack(SampleTrack.query)
+                    } label: {
+                        Strings.homePlayDemo
                     }
                     .accessibilityIdentifier("home.playDemoTrackButton")
                 }
             }
-            .navigationTitle("Search")
+            .navigationTitle(Strings.homeNavigationTitle)
         }
     }
 }

@@ -6,10 +6,10 @@ public struct RadioView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                Text("Radio screen")
-                Text("In development")
+                Strings.radioScreen
+                Strings.radioInDevelopment
             }
-            .navigationTitle("Radio")
+            .navigationTitle(Strings.radioNavigationTitle)
         }
     }
 }
